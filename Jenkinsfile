@@ -84,11 +84,6 @@ pipeline {
         stage('Launch Jenkins Agent') {
             steps {
                 script {
-
-                    sh """
-                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip \
-                            "sudo apt-get update && sudo apt install openjdk-11-jre-headless -y && java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp"
-                    """
                     sh """
                         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip \
                             "sudo apt-get update && sudo apt install openjdk-11-jre-headless -y &&
