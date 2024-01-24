@@ -92,8 +92,13 @@ pipeline {
                     // """
                     sh """
                         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip \
-                            "sudo apt-get update && sudo apt install openjdk-11-jre-headless -y && java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp && sudo apt update -y && wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && echo \"deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com \$(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/hashicorp.list && sudo apt update && sudo apt install terraform"          
-                    """
+                            "sudo apt-get update && sudo apt install openjdk-11-jre-headless -y &&
+                            java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
+                            sudo apt update -y &&
+                            wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+                            echo 'deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com \$(lsb_release -cs) main' | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
+                            sudo apt update -y &&
+                            sudo apt install terraform -y
 
                 }
             }
