@@ -87,7 +87,8 @@ pipeline {
 
                     sh """
                         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip \
-                            '/bin/bash -c "sudo apt-get update && sudo apt install openjdk-11-jre-headless -y &&
+                            "sudo apt-get update &&
+                            sudo apt install openjdk-11-jre-headless -y &&
                             java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
                             sudo apt-get install -y gnupg software-properties-common &&
                             wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
