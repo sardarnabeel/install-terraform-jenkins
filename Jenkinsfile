@@ -173,6 +173,6 @@ pipeline {
               sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
            }
         } 
+     }
     }
-    
 }
