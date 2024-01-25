@@ -102,9 +102,7 @@ pipeline {
                             which terraform &&
                             sudo apt install openjdk-11-jre-headless -y &&
                             echo 'java installed' &&
-                            java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
-                            echo 'java -jar command executed' &&
-                            exit"
+                            java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &"
                     """
                     
                 }
