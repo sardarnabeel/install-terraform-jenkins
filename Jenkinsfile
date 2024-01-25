@@ -107,6 +107,19 @@ pipeline {
                     
                 }
             }
+            post {
+               always {
+                  script {
+                      echo "Executing post-action"
+                      echo "Instance ID: $instance_id"
+                      echo "Instance IP: $instance_ip"
+
+                      sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
+            
+                      sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
+                  }
+               } 
+            }
         }
         stage('Install Terraform') {
             steps {
@@ -141,17 +154,17 @@ pipeline {
     //     }
     // }
 
-    post {
-        always {
-           script {
-              echo "Executing post-action"
-              echo "Instance ID: $instance_id"
-              echo "Instance IP: $instance_ip"
+    // post {
+    //     always {
+    //        script {
+    //           echo "Executing post-action"
+    //           echo "Instance ID: $instance_id"
+    //           echo "Instance IP: $instance_ip"
 
-              sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
+    //           sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
             
-              sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
-           }
-        } 
-     }
+    //           sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
+    //        }
+    //     } 
+    //  }
 }
