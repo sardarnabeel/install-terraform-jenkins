@@ -121,27 +121,27 @@ pipeline {
                } 
             }
         }
-        stage('Install Terraform') {
-            steps {
-                script {
-                    sh """
-                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
-                            sudo apt-get install -y gnupg software-properties-common &&
-                            echo "gnupg package installed" &&
-                            wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
-                            echo "terraform download" &&
-                            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
-                            echo "command executed successfully" &&
-                            sudo apt-get update -y &&
-                            echo "update successfully" &&
-                            sudo apt-get install -y terraform &&
-                            echo "terraform installed" &&
-                            which terraform || echo "Terraform installation failed. Check logs for more details."
-                        '
-                    """
-                }
-            }
-        }
+        // stage('Install Terraform') {
+        //     steps {
+        //         script {
+        //             sh """
+        //                 ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
+        //                     sudo apt-get install -y gnupg software-properties-common &&
+        //                     echo "gnupg package installed" &&
+        //                     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+        //                     echo "terraform download" &&
+        //                     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
+        //                     echo "command executed successfully" &&
+        //                     sudo apt-get update -y &&
+        //                     echo "update successfully" &&
+        //                     sudo apt-get install -y terraform &&
+        //                     echo "terraform installed" &&
+        //                     which terraform || echo "Terraform installation failed. Check logs for more details."
+        //                 '
+        //             """
+        //         }
+        //     }
+        // }
     }
     // post {
     //     always {
