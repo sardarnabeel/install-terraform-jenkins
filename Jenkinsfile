@@ -88,7 +88,7 @@ pipeline {
                     sh """
                         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@$instance_ip \
                             "sudo apt-get update &&
-                            sudo apt =get install awscli -y &&
+                            sudo apt-get install awscli -y &&
                             sudo apt-get install -y gnupg software-properties-common &&
                             echo 'gnupg package isntalled' &&
                             wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
