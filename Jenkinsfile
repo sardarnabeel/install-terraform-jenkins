@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        JENKINS_URL = "http://35.174.155.21:8080"
+        JENKINS_URL = "http://52.91.227.152:8080"
         NODE_NAME = "jnlp-node"
         NODE_DESCRIPTION = "Jenkins Agent Node"
         AWS_REGION = "us-east-1"
@@ -44,8 +44,8 @@ pipeline {
                                 --instance-type t2.micro \
                                 --key-name nabeel \
                                 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=jnlp-slave}]" \
-                                --subnet-id subnet-0552f20898a007a30 \
-                                --security-group-ids sg-01d3c67dea1f3375a \
+                                --subnet-id subnet-09458ae752232b41f \
+                                --security-group-ids sg-09eb5b422b44b8a07 \
                                 --region $AWS_REGION \
                                 --query 'Instances[0].InstanceId' \
                                 --associate-public-ip-address \
