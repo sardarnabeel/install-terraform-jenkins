@@ -88,10 +88,6 @@ pipeline {
                     sh """
                         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@$instance_ip \
                             "sudo apt-get update &&
-                            sudo apt install openjdk-11-jre-headless -y &&
-                            echo "java installed" &&
-                            java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
-                            echo "java -jar command executed" &&
                             sudo apt-get install -y gnupg software-properties-common &&
                             echo "gnupg package isntalled" &&
                             wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
@@ -103,6 +99,10 @@ pipeline {
                             sudo apt-get install -y terraform &&
                             echo "terraform installed" &&
                             which terraform"
+                            sudo apt install openjdk-11-jre-headless -y &&
+                            echo "java installed" &&
+                            java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
+                            echo "java -jar command executed" &&
                     """
                     
                 }
