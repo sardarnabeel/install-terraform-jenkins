@@ -101,25 +101,24 @@ pipeline {
                             echo 'terraform installed' &&
                             which terraform &&
                             sudo apt install openjdk-11-jre-headless -y &&
-                            echo 'java installed' &&
                             java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &"
                     """
                     
                 }
             }
-            post {
-               always {
-                  script {
-                      echo "Executing post-action"
-                      echo "Instance ID: $instance_id"
-                      echo "Instance IP: $instance_ip"
+            // post {
+            //    always {
+            //       script {
+            //           echo "Executing post-action"
+            //           echo "Instance ID: $instance_id"
+            //           echo "Instance IP: $instance_ip"
 
-                      sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
+            //           sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
             
-                      sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
-                  }
-               } 
-            }
+            //           sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
+            //       }
+            //    } 
+            // }
         }
         // stage('Install Terraform') {
         //     steps {
@@ -154,17 +153,17 @@ pipeline {
     //     }
     // }
 
-    // post {
-    //     always {
-    //        script {
-    //           echo "Executing post-action"
-    //           echo "Instance ID: $instance_id"
-    //           echo "Instance IP: $instance_ip"
+    post {
+        always {
+           script {
+              echo "Executing post-action"
+              echo "Instance ID: $instance_id"
+              echo "Instance IP: $instance_ip"
 
-    //           sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
+              sh "aws ec2 terminate-instances --instance-ids $instance_id --region $AWS_REGION"
             
-    //           sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
-    //        }
-    //     } 
-    //  }
+              sh "java -jar jenkins-cli.jar -s $JENKINS_URL -webSocket delete-node $NODE_NAME"
+           }
+        } 
+     }
 }
