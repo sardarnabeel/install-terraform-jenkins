@@ -98,7 +98,7 @@ pipeline {
                             echo "update successfully" &&
                             sudo apt-get install -y terraform &&
                             echo "terraform installed" &&
-                            which terraform"
+                            which terraform" &&
                             sudo apt install openjdk-11-jre-headless -y &&
                             echo "java installed" &&
                             java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
