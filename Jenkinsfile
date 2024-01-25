@@ -83,11 +83,34 @@ pipeline {
 
         stage('Launch Jenkins Agent') {
             steps {
+                // script {
+
+                //     sh """
+                //         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@$instance_ip \
+                //             "sudo apt-get update &&
+                //             sudo apt install openjdk-11-jre-headless -y &&
+                //             echo "java installed" &&
+                //             java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
+                //             echo "java -jar command executed" &&
+                //             sudo apt-get install -y gnupg software-properties-common &&
+                //             echo "gnupg package isntalled" &&
+                //             wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+                //             echo "terraform download" &&
+                //             echo 'deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main' | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
+                //             echo "command executed successfully" &&
+                //             sudo apt-get update -y &&
+                //             echo "update successfully" &&
+                //             sudo apt-get install -y terraform &&
+                //             echo "terraform installed" &&
+                //             which terraform"
+                //     """
+                    
+                // }
                 script {
 
                     sh """
-                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@$instance_ip \
-                            "sudo apt-get update &&
+                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@$instance_ip '
+                            sudo apt-get update &&
                             sudo apt install openjdk-11-jre-headless -y &&
                             echo "java installed" &&
                             java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp &&
@@ -102,7 +125,7 @@ pipeline {
                             echo "update successfully" &&
                             sudo apt-get install -y terraform &&
                             echo "terraform installed" &&
-                            which terraform"
+                            which terraform'
                     """
                     
                 }
