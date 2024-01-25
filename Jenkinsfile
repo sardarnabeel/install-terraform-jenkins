@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        JENKINS_URL = "http://52.91.227.152:8080"
+        JENKINS_URL = "http://52.91.1.20:8080"
         NODE_NAME = "jnlp-node"
         NODE_DESCRIPTION = "Jenkins Agent Node"
         AWS_REGION = "us-east-1"
