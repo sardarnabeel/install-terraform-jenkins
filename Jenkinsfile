@@ -114,8 +114,16 @@ pipeline {
         stage('Install Terraform') {
             steps {
                 script {
-                    withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                      sh 'terraform --version'
+                    def tfHome = tool 'terraform'
+                    env.PATH = "${tfHome}/bin:${env.PATH}"
+
+                    // Copy Terraform binary to the Jenkins agent
+                   sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${tfHome}/bin/terraform ubuntu@${instance_ip}:/home/ubuntu/"
+
+                  // Verify Terraform installation on the agent
+                  sh 'ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} "terraform --version"'
+                    // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
+                    //   sh 'terraform --version'
                     } 
                      // it executed seperatedly
                     // def tfHome = tool 'terraform'
