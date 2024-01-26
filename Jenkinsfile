@@ -1,6 +1,8 @@
 pipeline {
     agent any
-    
+    tools {
+        terraform 'terraform'
+    }
     environment {
         JENKINS_URL = "http://54.211.224.228:8080"
         NODE_NAME = "jnlp-node"
@@ -88,18 +90,6 @@ pipeline {
                     sh """
                         ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip \
                             "sudo apt-get update &&
-                            sudo apt-get install awscli -y &&
-                            sudo apt-get install -y gnupg software-properties-common &&
-                            echo 'gnupg package isntalled' &&
-                            wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
-                            echo 'terraform download' &&
-                            echo 'deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main' | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
-                            echo 'command executed successfully' &&
-                            sudo apt-get update -y &&
-                            echo 'update successfully' &&
-                            sudo apt-get install -y terraform &&
-                            echo 'terraform installed' &&
-                            which terraform &&
                             sudo apt install openjdk-11-jre-headless -y &&
                             nohup java -v -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &
                         "
@@ -121,27 +111,28 @@ pipeline {
             //    } 
             // }
         }
-        // stage('Install Terraform') {
-        //     steps {
-        //         script {
-        //             sh """
-        //                 ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
-        //                     sudo apt-get install -y gnupg software-properties-common &&
-        //                     echo "gnupg package installed" &&
-        //                     wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
-        //                     echo "terraform download" &&
-        //                     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
-        //                     echo "command executed successfully" &&
-        //                     sudo apt-get update -y &&
-        //                     echo "update successfully" &&
-        //                     sudo apt-get install -y terraform &&
-        //                     echo "terraform installed" &&
-        //                     which terraform || echo "Terraform installation failed. Check logs for more details."
-        //                 '
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Install Terraform') {
+            steps {
+                script {
+                    sh 'terraform --version'
+                    // sh """
+                    //     ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
+                    //         sudo apt-get install -y gnupg software-properties-common &&
+                    //         echo "gnupg package installed" &&
+                    //         wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+                    //         echo "terraform download" &&
+                    //         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
+                    //         echo "command executed successfully" &&
+                    //         sudo apt-get update -y &&
+                    //         echo "update successfully" &&
+                    //         sudo apt-get install -y terraform &&
+                    //         echo "terraform installed" &&
+                    //         which terraform || echo "Terraform installation failed. Check logs for more details."
+                    //     '
+                    // """
+                }
+            }
+        }
     }
     // post {
     //     always {
