@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        JENKINS_URL = "http://52.91.1.20:8080"
+        JENKINS_URL = "http://54.211.224.228:8080"
         NODE_NAME = "jnlp-node"
         NODE_DESCRIPTION = "Jenkins Agent Node"
         AWS_REGION = "us-east-1"
@@ -44,8 +44,8 @@ pipeline {
                                 --instance-type t2.micro \
                                 --key-name nabeel \
                                 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=jnlp-slave}]" \
-                                --subnet-id subnet-09458ae752232b41f \
-                                --security-group-ids sg-09eb5b422b44b8a07 \
+                                --subnet-id subnet-012df91aed78ed2e6 \
+                                --security-group-ids sg-0c997f23998a90900 \
                                 --region $AWS_REGION \
                                 --query 'Instances[0].InstanceId' \
                                 --associate-public-ip-address \
@@ -76,7 +76,7 @@ pipeline {
 
                     sh "curl -O $JENKINS_URL/jnlpJars/agent.jar"
 
-                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
+                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
                 }
             }
         }
@@ -86,7 +86,7 @@ pipeline {
                 script {
 
                     sh """
-                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@$instance_ip \
+                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem ubuntu@$instance_ip \
                             "sudo apt-get update &&
                             sudo apt-get install awscli -y &&
                             sudo apt-get install -y gnupg software-properties-common &&
