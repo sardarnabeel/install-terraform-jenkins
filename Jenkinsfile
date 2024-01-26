@@ -124,7 +124,7 @@ pipeline {
                     sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
 
                     // Verify Terraform installation on the agent
-                    sh 'ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} "terraform --version"'
+                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
                     // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
                     //   sh 'terraform --version'
