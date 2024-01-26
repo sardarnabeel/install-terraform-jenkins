@@ -114,7 +114,11 @@ pipeline {
         stage('Install Terraform') {
             steps {
                 script {
+                    def tfHome = tool 'terraform'
+                    env.PATH = "${tfHome}/bin:${env.PATH}"
+            
                     sh 'terraform --version'
+                     // sh 'terraform --version'
                     // sh """
                     //     ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
                     //         sudo apt-get install -y gnupg software-properties-common &&
