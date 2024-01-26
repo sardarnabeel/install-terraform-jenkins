@@ -29,7 +29,7 @@ pipeline {
                             <mode>NORMAL</mode>
                             <retentionStrategy class="hudson.slaves.RetentionStrategy\$Always"/>
                             <launcher class="hudson.slaves.JNLPLauncher" />
-                            <label></label>
+                            <label>jnlp</label>
                             <nodeProperties/>
                         </slave>
                         EOF
@@ -114,16 +114,27 @@ pipeline {
             // }
         }
         stage('Install Terraform') {
+            agent {
+                label 'jnlp'
+            }
             steps {
                 script {
                     // Install Terraform on the slave machine if not already installed
                     sh """
                         if [ ! -x "\$(command -v terraform)" ]; then
                             echo "Terraform not found. Installing..."
-                            cp ${TERRAFORM_HOME}/bin/terraform /usr/local/bin/
+                            cp \$(which terraform) /usr/local/bin/
                         fi
                         terraform --version
                     """
+                    // // Install Terraform on the slave machine if not already installed
+                    // sh """
+                    //     if [ ! -x "\$(command -v terraform)" ]; then
+                    //         echo "Terraform not found. Installing..."
+                    //         cp ${TERRAFORM_HOME}/bin/terraform /usr/local/bin/
+                    //     fi
+                    //     terraform --version
+                    // """
                     // def tfHome = tool 'terraform'
                     // env.PATH = "${tfHome}/bin:${env.PATH}"
 
