@@ -10,6 +10,8 @@ pipeline {
         AWS_REGION = "us-east-1"
         instance_id = ''
         instance_ip = ''
+        TERRAFORM_HOME = tool 'terraform'
+        PATH = "${TERRAFORM_HOME}/bin:${env.PATH}"
     }
 
     stages {
@@ -114,17 +116,25 @@ pipeline {
         stage('Install Terraform') {
             steps {
                 script {
-                    def tfHome = tool 'terraform'
-                    env.PATH = "${tfHome}/bin:${env.PATH}"
+                    // Install Terraform on the slave machine if not already installed
+                    sh """
+                        if [ ! -x "\$(command -v terraform)" ]; then
+                            echo "Terraform not found. Installing..."
+                            cp ${TERRAFORM_HOME}/bin/terraform /usr/local/bin/
+                        fi
+                        terraform --version
+                    """
+                    // def tfHome = tool 'terraform'
+                    // env.PATH = "${tfHome}/bin:${env.PATH}"
 
-                    // Get the Terraform binary path
-                    def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
+                    // // Get the Terraform binary path
+                    // def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
 
-                    // Copy Terraform binary to the Jenkins agent
-                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
+                    // // Copy Terraform binary to the Jenkins agent
+                    // sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
 
-                    // Verify Terraform installation on the agent
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
+                    // // Verify Terraform installation on the agent
+                    // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
                     // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
                     //   sh 'terraform --version'
