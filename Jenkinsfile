@@ -117,11 +117,15 @@ pipeline {
                     def tfHome = tool 'terraform'
                     env.PATH = "${tfHome}/bin:${env.PATH}"
 
-                    // Copy Terraform binary to the Jenkins agent
-                   sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${tfHome}/bin/terraform ubuntu@${instance_ip}:/home/ubuntu/"
+                    // Get the Terraform binary path
+                    def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
 
-                  // Verify Terraform installation on the agent
-                  sh 'ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} "terraform --version"'
+                    // Copy Terraform binary to the Jenkins agent
+                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
+
+                    // Verify Terraform installation on the agent
+                    sh 'ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} "terraform --version"'
+        
                     // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
                     //   sh 'terraform --version'
                     } 
