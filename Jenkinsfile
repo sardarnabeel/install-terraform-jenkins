@@ -94,16 +94,14 @@ pipeline {
                             "sudo apt-get update &&
                             sudo apt install openjdk-11-jre-headless -y &&
                             nohup java -v -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &
+                            disown"
+                    """
+                    
+                }
                             // nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & 
                             // disown
                             // nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &
                             // disown
-
-
-                        "
-                    """
-                    
-                }
             }
             // post {
             //    always {
@@ -119,67 +117,67 @@ pipeline {
             //    } 
             // }
         }
-        stage('Install Terraform') {
-            agent {
-                label 'jnlp'
-            }
-            steps {
-                script {
-                    // Install Terraform on the slave machine if not already installed
-                    sh """
-                        if [ ! -x "\$(command -v terraform)" ]; then
-                            echo "Terraform not found. Installing..."
-                            cp \$(which terraform) /usr/local/bin/
-                        fi
-                        terraform --version
-                    """
-                    // // Install Terraform on the slave machine if not already installed
-                    // sh """
-                    //     if [ ! -x "\$(command -v terraform)" ]; then
-                    //         echo "Terraform not found. Installing..."
-                    //         cp ${TERRAFORM_HOME}/bin/terraform /usr/local/bin/
-                    //     fi
-                    //     terraform --version
-                    // """
-                    // def tfHome = tool 'terraform'
-                    // env.PATH = "${tfHome}/bin:${env.PATH}"
+        // stage('Install Terraform') {
+        //     agent {
+        //         label 'jnlp'
+        //     }
+        //     steps {
+        //         script {
+        //             // Install Terraform on the slave machine if not already installed
+        //             sh """
+        //                 if [ ! -x "\$(command -v terraform)" ]; then
+        //                     echo "Terraform not found. Installing..."
+        //                     cp \$(which terraform) /usr/local/bin/
+        //                 fi
+        //                 terraform --version
+        //             """
+        //             // // Install Terraform on the slave machine if not already installed
+        //             // sh """
+        //             //     if [ ! -x "\$(command -v terraform)" ]; then
+        //             //         echo "Terraform not found. Installing..."
+        //             //         cp ${TERRAFORM_HOME}/bin/terraform /usr/local/bin/
+        //             //     fi
+        //             //     terraform --version
+        //             // """
+        //             // def tfHome = tool 'terraform'
+        //             // env.PATH = "${tfHome}/bin:${env.PATH}"
 
-                    // // Get the Terraform binary path
-                    // def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
+        //             // // Get the Terraform binary path
+        //             // def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
 
-                    // // Copy Terraform binary to the Jenkins agent
-                    // sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
+        //             // // Copy Terraform binary to the Jenkins agent
+        //             // sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
 
-                    // // Verify Terraform installation on the agent
-                    // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
+        //             // // Verify Terraform installation on the agent
+        //             // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
-                    // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                    //   sh 'terraform --version'
-                    } 
-                     // it executed seperatedly
-                    // def tfHome = tool 'terraform'
-                    // env.PATH = "${tfHome}/bin:${env.PATH}"
+        //             // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
+        //             //   sh 'terraform --version'
+        //             } 
+        //              // it executed seperatedly
+        //             // def tfHome = tool 'terraform'
+        //             // env.PATH = "${tfHome}/bin:${env.PATH}"
             
-                    // sh 'terraform --version' 
-                     // it executed seperately
-                     // sh 'terraform --version'
-                    // sh """
-                    //     ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
-                    //         sudo apt-get install -y gnupg software-properties-common &&
-                    //         echo "gnupg package installed" &&
-                    //         wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
-                    //         echo "terraform download" &&
-                    //         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
-                    //         echo "command executed successfully" &&
-                    //         sudo apt-get update -y &&
-                    //         echo "update successfully" &&
-                    //         sudo apt-get install -y terraform &&
-                    //         echo "terraform installed" &&
-                    //         which terraform || echo "Terraform installation failed. Check logs for more details."
-                    //     '
-                    // """
-                }
-            }
+        //             // sh 'terraform --version' 
+        //              // it executed seperately
+        //              // sh 'terraform --version'
+        //             // sh """
+        //             //     ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jenkinsfile/nabeel.pem ubuntu@${instance_ip} '
+        //             //         sudo apt-get install -y gnupg software-properties-common &&
+        //             //         echo "gnupg package installed" &&
+        //             //         wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+        //             //         echo "terraform download" &&
+        //             //         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
+        //             //         echo "command executed successfully" &&
+        //             //         sudo apt-get update -y &&
+        //             //         echo "update successfully" &&
+        //             //         sudo apt-get install -y terraform &&
+        //             //         echo "terraform installed" &&
+        //             //         which terraform || echo "Terraform installation failed. Check logs for more details."
+        //             //     '
+        //             // """
+        //         }
+        //     }
         }
     // post {
     //     always {
