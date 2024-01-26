@@ -150,7 +150,6 @@ pipeline {
                 }
             }
         }
-    }
     // post {
     //     always {
     //         script {
