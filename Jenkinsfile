@@ -76,7 +76,7 @@ pipeline {
 
                     sh "curl -O $JENKINS_URL/jnlpJars/agent.jar"
 
-                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
+                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
                 }
             }
         }
@@ -86,7 +86,7 @@ pipeline {
                 script {
 
                     sh """
-                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem ubuntu@$instance_ip \
+                        ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip \
                             "sudo apt-get update &&
                             sudo apt-get install awscli -y &&
                             sudo apt-get install -y gnupg software-properties-common &&
