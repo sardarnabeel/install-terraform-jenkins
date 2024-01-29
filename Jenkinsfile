@@ -141,7 +141,7 @@ pipeline {
                     // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
                     // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                    //   sh 'terraform --version'
+                      sh 'terraform --version'
                     } 
                      // it executed seperatedly
                     // def tfHome = tool 'terraform'
@@ -149,7 +149,7 @@ pipeline {
             
                     // sh 'terraform --version' 
                      // it executed seperately
-                     sh 'terraform --version'
+                     // sh 'terraform --version'
                 }
             }
       }
