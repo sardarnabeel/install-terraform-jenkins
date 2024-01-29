@@ -1,8 +1,7 @@
 pipeline {
     agent any
-    tools {
-        terraform 'terraform'
-    }
+    
+}
     environment {
         JENKINS_URL = "http://44.211.190.166:8080"
         NODE_NAME = "jnlp-node"
@@ -10,8 +9,6 @@ pipeline {
         AWS_REGION = "us-east-1"
         instance_id = ''
         instance_ip = ''
-        TERRAFORM_HOME = tool 'terraform'
-        PATH = "${TERRAFORM_HOME}/bin:${env.PATH}"
     }
 
      stages {
