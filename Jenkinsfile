@@ -12,8 +12,8 @@ pipeline {
         AWS_REGION = "us-east-1"
         instance_id = ''
         instance_ip = ''
-        TERRAFORM_HOME = tool 'terraform'
-        PATH = "${TERRAFORM_HOME}/bin:${env.PATH}"
+        // TERRAFORM_HOME = tool 'terraform'
+        // PATH = "${TERRAFORM_HOME}/bin:${env.PATH}"
     }
 
      stages {
@@ -142,10 +142,10 @@ pipeline {
                     // // Verify Terraform installation on the agent
                     // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
-                    withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                      sh 'terraform --version'
-                    }
-                    sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
+                    // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
+                    //   sh 'terraform --version'
+                    // }
+                    // sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
                 } 
                      // it executed seperatedly
                     // def tfHome = tool 'terraform'
@@ -153,7 +153,8 @@ pipeline {
             
                     // sh 'terraform --version' 
                      // it executed seperately
-                     // sh 'terraform --version'
+                     sh 'terraform --version'
+                     sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
             }
         }
      }
