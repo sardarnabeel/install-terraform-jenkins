@@ -80,7 +80,7 @@ pipeline {
 
                     sh "curl -O $JENKINS_URL/jnlpJars/agent.jar"
 
-                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
+                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
                 }
             }
         }
@@ -88,9 +88,9 @@ pipeline {
         stage('Launch Jenkins Agent') {
             steps {
                 script {
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip 'sudo apt-get update'"
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip 'sudo apt install openjdk-11-jre-headless -y'"
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'"   
+                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'sudo apt-get update'"
+                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'sudo apt install openjdk-11-jre-headless -y'"
+                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'"   
                     // sh """
                     //     ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip \
                     //         "sudo apt-get update &&
