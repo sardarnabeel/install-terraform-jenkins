@@ -1,7 +1,7 @@
 pipeline {
     agent any
     
-}
+
     environment {
         JENKINS_URL = "http://44.211.190.166:8080"
         NODE_NAME = "jnlp-node"
