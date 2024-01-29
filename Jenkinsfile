@@ -115,8 +115,10 @@ pipeline {
             steps {
                 script {
                     withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                      sh 'terraform --version'
-                      // sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
+                      sh """
+                           terraform --version
+                           cd /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform
+                           sudo mv terraform /usr/local/bin/
                     }
                     
                 } 
