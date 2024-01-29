@@ -92,20 +92,9 @@ pipeline {
                 script {
                     sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'sudo apt-get update -y'"
                     sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'sudo apt install openjdk-11-jre-headless -y'"
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'"   
-                    // sh """
-                    //     ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@$instance_ip \
-                    //         "sudo apt-get update &&
-                    //         sudo apt install openjdk-11-jre-headless -y &&
-                    //         nohup java -v -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &
-                    //     "
-                    // """
-                    
+                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@$instance_ip 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'" 
                 }
-                            // nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & 
-                            // disown
-                            // nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 &
-                            // disown
+                           
             }
         }
         stage('Install Terraform') {
@@ -123,9 +112,6 @@ pipeline {
                     }
                     
                 } 
-                     // it executed seperatedly
-                    // def tfHome = tool 'terraform'
-                    // env.PATH = "${tfHome}/bin:${env.PATH}"
             }
         }
      }
