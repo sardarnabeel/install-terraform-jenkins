@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        terraform 'terraform'
+    }
     
 
     environment {
@@ -103,5 +106,51 @@ pipeline {
                             // disown
             }
         }
+        stage('Install Terraform') {
+            agent {
+                label 'jnlp'
+            }
+            steps {
+                script {
+                    // Install Terraform on the slave machine if not already installed
+                    sh """
+                        if [ ! -x "\$(command -v terraform)" ]; then
+                            echo "Terraform not found. Installing..."
+                            cp \$(which terraform) /usr/local/bin/
+                        fi
+                        terraform --version
+                    """
+                    // // Install Terraform on the slave machine if not already installed
+                    // sh """
+                    //     if [ ! -x "\$(command -v terraform)" ]; then
+                    //         echo "Terraform not found. Installing..."
+                    //         cp ${TERRAFORM_HOME}/bin/terraform /usr/local/bin/
+                    //     fi
+                    //     terraform --version
+                    // """
+                    // def tfHome = tool 'terraform'
+                    // env.PATH = "${tfHome}/bin:${env.PATH}"
+
+                    // // Get the Terraform binary path
+                    // def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
+
+                    // // Copy Terraform binary to the Jenkins agent
+                    // sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
+
+                    // // Verify Terraform installation on the agent
+                    // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
+        
+                    // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
+                    //   sh 'terraform --version'
+                    } 
+                     // it executed seperatedly
+                    // def tfHome = tool 'terraform'
+                    // env.PATH = "${tfHome}/bin:${env.PATH}"
+            
+                    // sh 'terraform --version' 
+                     // it executed seperately
+                     sh 'terraform --version'
+                }
+            }
       }
 }
