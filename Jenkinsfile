@@ -147,7 +147,7 @@ pipeline {
                     // }
                     // sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
                     sh 'terraform --version'
-                    sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
+                    // sh "sudo mv /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform /usr/local/bin"
                 } 
                      // it executed seperatedly
                     // def tfHome = tool 'terraform'
