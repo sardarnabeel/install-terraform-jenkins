@@ -137,22 +137,23 @@ pipeline {
                     // def terraformBinaryPath = sh(returnStdout: true, script: 'which terraform').trim()
 
                     // // Copy Terraform binary to the Jenkins agent
-                    // sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
+                    // sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ${terraformBinaryPath} ubuntu@${instance_ip}:/home/ubuntu/"
 
                     // // Verify Terraform installation on the agent
-                    // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
+                    // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/jnlp/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
-                    // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                      // sh 'terraform --version'
-                    } 
+                    withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
+                      sh 'terraform --version'
+                    }
+                } 
                      // it executed seperatedly
-                    def tfHome = tool 'terraform'
-                    env.PATH = "${tfHome}/bin:${env.PATH}"
+                    // def tfHome = tool 'terraform'
+                    // env.PATH = "${tfHome}/bin:${env.PATH}"
             
-                    sh 'terraform --version' 
+                    // sh 'terraform --version' 
                      // it executed seperately
                      // sh 'terraform --version'
-                }
             }
-      }
+        }
+     }
 }
