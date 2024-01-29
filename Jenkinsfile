@@ -4,7 +4,7 @@ pipeline {
         terraform 'terraform'
     }
     environment {
-        JENKINS_URL = "http://54.211.224.228:8080"
+        JENKINS_URL = "http://44.211.190.166:8080"
         NODE_NAME = "jnlp-node"
         NODE_DESCRIPTION = "Jenkins Agent Node"
         AWS_REGION = "us-east-1"
@@ -48,8 +48,8 @@ pipeline {
                                 --instance-type t2.micro \
                                 --key-name nabeel \
                                 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=jnlp-slave}]" \
-                                --subnet-id subnet-012df91aed78ed2e6 \
-                                --security-group-ids sg-0c997f23998a90900 \
+                                --subnet-id subnet-01250bf99475a9e1c \
+                                --security-group-ids sg-04af7f874de8c1104 \
                                 --region $AWS_REGION \
                                 --query 'Instances[0].InstanceId' \
                                 --associate-public-ip-address \
