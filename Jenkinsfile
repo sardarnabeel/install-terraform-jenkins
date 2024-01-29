@@ -113,13 +113,13 @@ pipeline {
             steps {
                 script {
                     // Install Terraform on the slave machine if not already installed
-                    sh """
-                        if [ ! -x "\$(command -v terraform)" ]; then
-                            echo "Terraform not found. Installing..."
-                            cp \$(which terraform) /usr/local/bin/
-                        fi
-                        terraform --version
-                    """
+                    // sh """
+                    //     if [ ! -x "\$(command -v terraform)" ]; then
+                    //         echo "Terraform not found. Installing..."
+                    //         cp \$(which terraform) /usr/local/bin/
+                    //     fi
+                    //     terraform --version
+                    // """
                     // // Install Terraform on the slave machine if not already installed
                     // sh """
                     //     if [ ! -x "\$(command -v terraform)" ]; then
