@@ -12,6 +12,8 @@ pipeline {
         AWS_REGION = "us-east-1"
         instance_id = ''
         instance_ip = ''
+        TERRAFORM_HOME = tool 'terraform'
+        PATH = "${TERRAFORM_HOME}/bin:${env.PATH}"
     }
 
      stages {
@@ -141,13 +143,13 @@ pipeline {
                     // sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/Jenkinsfile/nabeel.pem ubuntu@${instance_ip} 'terraform --version'"
         
                     // withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                      sh 'terraform --version'
+                      // sh 'terraform --version'
                     } 
                      // it executed seperatedly
-                    // def tfHome = tool 'terraform'
-                    // env.PATH = "${tfHome}/bin:${env.PATH}"
+                    def tfHome = tool 'terraform'
+                    env.PATH = "${tfHome}/bin:${env.PATH}"
             
-                    // sh 'terraform --version' 
+                    sh 'terraform --version' 
                      // it executed seperately
                      // sh 'terraform --version'
                 }
