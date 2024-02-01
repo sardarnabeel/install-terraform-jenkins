@@ -3,7 +3,6 @@ pipeline {
     tools {
         terraform 'terraform'
     }
-    
 
     environment {
         JENKINS_URL = "http://54.156.116.231:8080"
@@ -14,7 +13,7 @@ pipeline {
         instance_ip = ''
     }
 
-     stages {
+    stages {
         stage('Create Jenkins Agent Node') {
             steps {
                 script {
@@ -60,10 +59,9 @@ pipeline {
                     env.instance_id = instance_id
 
                     sh "aws ec2 wait instance-running --instance-ids $instance_id --region $AWS_REGION"
-
                     sh "aws ec2 wait instance-status-ok --instance-ids $instance_id --region $AWS_REGION"
 
-                    //public IP of the instance
+                    // public IP of the instance
                     instance_ip = sh (
                         script: """
                             aws ec2 describe-instances \
@@ -80,7 +78,9 @@ pipeline {
 
                     sh "curl -O $JENKINS_URL/jnlpJars/agent.jar"
 
-                    sh "scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem agent.jar ubuntu@$instance_ip:/home/ubuntu/agent.jar"
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
+                        sh "scp -o StrictHostKeyChecking=no -i ${SSH_KEY} agent.jar ubuntu@${instance_ip}:/home/ubuntu/agent.jar"
+                    }
                 }
             }
         }
@@ -88,27 +88,30 @@ pipeline {
         stage('Launch Jenkins Agent') {
             steps {
                 script {
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem ubuntu@$instance_ip 'sudo apt-get update -y'"
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem ubuntu@$instance_ip 'sudo apt install openjdk-11-jre-headless -y'"
-                    sh "ssh -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/nabeel.pem ubuntu@$instance_ip 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'" 
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
+                        sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${instance_ip} 'sudo apt-get update -y'"
+                        sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${instance_ip} 'sudo apt install openjdk-11-jre-headless -y'"
+                        sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${instance_ip} 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'"
+                    }
                 }
-                           
             }
         }
+
         stage('Install Terraform') {
             agent {
                 label 'jnlp'
             }
             steps {
                 script {
-                    sh """
-                        terraform --version
-                        cd /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform
-                        sudo mv terraform /usr/local/bin/
-                    """
-                    
-                } 
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
+                        sh """
+                            terraform --version
+                            cd /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform
+                            sudo mv terraform /usr/local/bin/
+                        """
+                    }
+                }
             }
         }
-     }
+    }
 }
