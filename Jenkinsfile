@@ -12,8 +12,6 @@ pipeline {
         AWS_REGION = "us-east-1"
         instance_id = ''
         instance_ip = ''
-        TERRAFORM_HOME = tool 'terraform'
-        PATH = "${TERRAFORM_HOME}/bin:${env.PATH}"
     }
 
      stages {
@@ -103,13 +101,7 @@ pipeline {
             }
             steps {
                 script {
-                    withEnv(["PATH+TERRAFORM=${tool 'terraform'}/bin"]) {
-                      sh """
-                           terraform --version
-                           cd /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform
-                           sudo mv terraform /usr/local/bin/
-                      """
-                    }
+                    sh 'terraform --version'
                     
                 } 
             }
