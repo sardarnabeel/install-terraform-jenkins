@@ -78,7 +78,7 @@ pipeline {
 
                     sh "curl -O $JENKINS_URL/jnlpJars/agent.jar"
 
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'ubuntu')]) {
                         sh "scp -o StrictHostKeyChecking=no -i ${SSH_KEY} agent.jar ubuntu@${instance_ip}:/home/ubuntu/agent.jar"
                     }
                 }
@@ -88,7 +88,7 @@ pipeline {
         stage('Launch Jenkins Agent') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'ubuntu')]) {
                         sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${instance_ip} 'sudo apt-get update -y'"
                         sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${instance_ip} 'sudo apt install openjdk-11-jre-headless -y'"
                         sh "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${instance_ip} 'nohup java -jar /home/ubuntu/agent.jar -jnlpUrl $JENKINS_URL/computer/$NODE_NAME/slave-agent.jnlp > /dev/null 2>&1 & disown'"
@@ -103,7 +103,7 @@ pipeline {
             }
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'ubuntu')]) {
                         sh """
                             terraform --version
                             cd /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform
