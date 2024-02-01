@@ -101,7 +101,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'terraform --version'
+                    sh """
+                        terraform --version
+                        cd /home/ubuntu/tools/org.jenkinsci.plugins.terraform.TerraformInstallation/terraform
+                        sudo mv terraform /usr/local/bin/
+                    """
                     
                 } 
             }
